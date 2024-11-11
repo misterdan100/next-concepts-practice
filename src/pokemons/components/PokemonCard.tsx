@@ -26,7 +26,7 @@ export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
 
         <div className="bg-gray-100">
           <Link
-            href={`/dashboard/pokemon/${id}`}
+            href={`/dashboard/pokemon/${name}`}
             className="flex w-full px-4 py-2 pb-4 hover:bg-gray-100"
           >
             <h3 className="w-full font-bold leading-none text-center text-gray-800 capitalize ">
@@ -50,7 +50,7 @@ export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
             </div>
           </Link>
           <Link
-            href={`/dashboard/pokemon/${id}`}
+            href={`/dashboard/pokemon/${name}`}
             className="flex items-center justify-center px-4 py-4 hover:bg-gray-100"
           >
             <div className="w-5 text-gray-600">

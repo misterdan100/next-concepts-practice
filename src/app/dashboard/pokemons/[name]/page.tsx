@@ -2,14 +2,15 @@ import { Pokemon } from "@/pokemons"
 import { Metadata } from "next"
 import Image from "next/image"
 import { notFound } from "next/navigation"
+import { getPokemons } from "../page"
 
 interface PokemonPageProps {
-    params: {id: string}
+    params: {name: string}
 }
 
-const getPokemon = async (id: string): Promise<Pokemon> => {
+const getPokemon = async (name: string): Promise<Pokemon> => {
   try {
-    const url = `https://pokeapi.co/api/v2/pokemon/${id}`
+    const url = `https://pokeapi.co/api/v2/pokemon/${name}`
     const pokemon = await fetch(url,{
       cache: 'force-cache'
     }).then( resp => resp.json())
@@ -23,9 +24,11 @@ const getPokemon = async (id: string): Promise<Pokemon> => {
 
 // function to generate 151 pages in build
 export async function generateStaticParams() {
-  const static151Pokemons = Array.from({ length: 151}).map( (v, i) => `${i + 1}`)
-  return static151Pokemons.map( id => ({
-    id: id
+
+    const pokemons = await getPokemons(151)
+  
+  return pokemons.map( pokemon => ({
+    name: pokemon.name
   }))
 }
 
@@ -33,8 +36,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({params}: PokemonPageProps): Promise<Metadata> {
   try {
-    const {id} = params
-    const pokemon = await getPokemon(id)
+    const {name} = params
+    const pokemon = await getPokemon(name)
 
     return {
         title: `#${pokemon.id} - ${pokemon.name}`,
@@ -51,7 +54,7 @@ export async function generateMetadata({params}: PokemonPageProps): Promise<Meta
 
 export default async function PokemonPage({ params }: PokemonPageProps) {
 
-    const pokemon = await getPokemon(params.id);
+    const pokemon = await getPokemon(params.name);
     
   
     return (
