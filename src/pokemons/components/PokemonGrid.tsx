@@ -14,9 +14,7 @@ export const PokemonGrid = ({pokemons}: PokemonGridProps) => {
         <PokemonCard 
             key={pokemon.id}
             pokemon={pokemon}
-        /> 
-
-        ))}
+        /> ))}
       </div>
   )
 }

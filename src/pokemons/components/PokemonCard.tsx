@@ -1,7 +1,11 @@
+'use client'
+
 import Link from "next/link";
 import { SimplePokemon } from "../interfaces/simple-pokemon";
 import Image from "next/image";
-import { IoEye, IoHeartOutline } from "react-icons/io5";
+import { IoEye, IoHeart, IoHeartOutline } from "react-icons/io5";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { toggleFavorite } from "@/store/pokemons/pokemons";
 
 interface PokemonCardProps {
   pokemon: SimplePokemon;
@@ -9,6 +13,13 @@ interface PokemonCardProps {
 
 export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   const { id, name } = pokemon;
+  const isFavorite = useAppSelector( state => !!state.pokemons.favorites[id] )
+  const dispatch = useAppDispatch()
+
+  const onToggle = () => {
+    dispatch(toggleFavorite(pokemon))
+  }
+
   return (
     <div className="right-0 mx-auto mt-2 w-60">
       <div className="overflow-hidden bg-white rounded shadow-lg">
@@ -36,19 +47,21 @@ export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
         </div>
 
         <div className="grid w-full grid-cols-2 border-b">
-          <Link
-            href="/dashboard/main"
-            className="flex items-center justify-center px-4 py-4 hover:bg-gray-100"
+          <div
+            // href="/dashboard/main"
+            onClick={onToggle}
+            className="flex items-center justify-center px-4 py-4 cursor-pointer hover:bg-gray-100"
           >
-            <div className="text-red-600">
-              <IoHeartOutline />
+            <div className="text-lg text-red-600">
+              { isFavorite ? <IoHeart /> : <IoHeartOutline /> }
+              
             </div>
             <div className="pl-3">
               <p className="text-sm font-medium leading-none text-gray-800">
                 Favorite
               </p>
             </div>
-          </Link>
+          </div>
           <Link
             href={`/dashboard/pokemon/${name}`}
             className="flex items-center justify-center px-4 py-4 hover:bg-gray-100"
